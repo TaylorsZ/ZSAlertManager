@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ZSAlertManager'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.summary          = 'ios 弹窗封装'
 
 # This description is used to generate tags and improve search results.
