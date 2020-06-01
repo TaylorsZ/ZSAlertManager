@@ -1,0 +1,6 @@
+use_frameworks!
+target 'ZSAlertManager_Tests' do
+  pod 'ZSAlertManager', :path => '../'
+  
+  
+end
