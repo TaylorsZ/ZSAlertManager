@@ -74,7 +74,13 @@ open class ZSAlert: NSObject {
     func show() {
         
         let rootVC = UIApplication.getTopMostViewController()
-        rootVC?.present(alertController!, animated: true, completion: nil);
+        var endVC:UIViewController?
+        if rootVC?.presentedViewController == nil {
+            endVC = rootVC
+        }else{
+            endVC = rootVC?.presentedViewController
+        }
+        endVC?.present(alertController!, animated: true, completion: nil);
         
     }
     
