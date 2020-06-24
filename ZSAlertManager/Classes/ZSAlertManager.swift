@@ -73,29 +73,65 @@ open class ZSAlert: NSObject {
     
     func show() {
         
-        let rootVC = UIApplication.getTopMostViewController()
+        let rootVC = getTopMostController()
         var endVC:UIViewController?
         if rootVC?.presentedViewController == nil {
             endVC = rootVC
         }else{
             endVC = rootVC?.presentedViewController
         }
+//        if endVC is UIAlertController {
+////            endVC = rootVC?.next
+//        }
         endVC?.present(alertController!, animated: true, completion: nil);
         
     }
-    
-    
-    
 }
+
+//获取当前最上层的控制器
+private func getTopMostController() -> UIViewController? {
+    var topWindow = UIApplication.shared.keyWindow
+    if topWindow?.windowLevel != UIWindowLevelNormal {
+        topWindow = returnWindowWithWindowLevelNormal()
+    }
+           
+    var topController = topWindow?.rootViewController
+    if topController == nil ,let delegate = UIApplication.shared.delegate?.window {
+        topWindow = delegate
+        if topWindow?.windowLevel != UIWindowLevelNormal{
+            topWindow = returnWindowWithWindowLevelNormal()
+        }
+        topController = topWindow?.rootViewController
+    }
+    while (topController?.presentedViewController != nil) {
+         topController = topController?.presentedViewController
+    }
+    if topController is UINavigationController {
+        let nav:UINavigationController = topController as! UINavigationController
+        topController = nav.viewControllers.last
+        
+        while(topController?.presentedViewController != nil)
+        {
+            topController = topController?.presentedViewController
+        }
+    }
+    
+    return topController
+}
+private func returnWindowWithWindowLevelNormal() -> UIWindow? {
+    let windows = UIApplication.shared.windows
+    for topWindow in windows {
+        if topWindow.windowLevel == UIWindowLevelNormal{
+           return topWindow
+        }
+    }
+    return UIApplication.shared.keyWindow
+}
+
 
 open class ZSAlertManager: NSObject {
     
-    
-    
-    
     var alertQueue:NSMutableArray = [];
-    
-    
     public static let manager: ZSAlertManager = {
         let instance = ZSAlertManager()
         return instance
