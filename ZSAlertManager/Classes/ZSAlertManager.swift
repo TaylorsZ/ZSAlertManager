@@ -109,7 +109,9 @@ private func getTopMostController() -> UIViewController? {
     if topController is UINavigationController {
         let nav:UINavigationController = topController as! UINavigationController
         topController = nav.viewControllers.last
-        
+        if topController is UIAlertController {
+            topController = nav.viewControllers[nav.viewControllers.count - 2]
+        }
         while(topController?.presentedViewController != nil)
         {
             topController = topController?.presentedViewController
